@@ -39,17 +39,20 @@ void loadCamera( const ci::fs::path &path, ci::CameraPersp &cam, const std::func
 			if( tree.hasChildren() ) {
 				try {
 					ci::vec3 eyePt( tree.getValueForKey<float>( "EX" ), tree.getValueForKey<float>( "EY" ), tree.getValueForKey<float>( "EZ" ) );
-					ci::vec3 ctrPt( tree.getValueForKey<float>( "CX" ), tree.getValueForKey<float>( "CY" ), tree.getValueForKey<float>( "CZ" ) );
-					ci::vec3 wldUp( tree.getValueForKey<float>( "WX" ), tree.getValueForKey<float>( "WY" ), tree.getValueForKey<float>( "WZ" ) );
-
+                    cam.setEyePoint( eyePt );
+					
+                    ci::vec3 ctrPt( tree.getValueForKey<float>( "CX" ), tree.getValueForKey<float>( "CY" ), tree.getValueForKey<float>( "CZ" ) );
+					cam.lookAt( ctrPt );
+                    
+                    ci::vec3 wldUp( tree.getValueForKey<float>( "WX" ), tree.getValueForKey<float>( "WY" ), tree.getValueForKey<float>( "WZ" ) );
+                    cam.setWorldUp( wldUp );
+                    
 					float fov = tree.getValueForKey<float>( "FOV" );
 					float near = tree.getValueForKey<float>( "NEAR" );
 					float far = tree.getValueForKey<float>( "FAR" );
 					float aspect = tree.getValueForKey<float>( "ASPECT" );
 					cam.setPerspective( fov, aspect, near, far );
-					cam.setEyePoint( eyePt );
-					cam.lookAt( ctrPt );
-					cam.setWorldUp( wldUp );
+
 					if( cb != nullptr ) {
 						cb();
 					}
